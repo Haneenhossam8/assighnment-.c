@@ -1,0 +1,19 @@
+#include <stdio.h>
+void scalar(int a[],int b[],int c[],int n)
+{
+int i;
+for(i=0;i<n;i++)
+c[i]=a[i]*b[i];
+}
+int main()
+{
+int a[5]={1,2,3,4,5};
+int b[5]={2,3,4,5,6};
+int c[5];
+int i;
+scalar(a,b,c,5);
+printf("Result:\n");
+for(i=0;i<5;i++)
+printf("%d ",c[i]);
+return 0;
+}
