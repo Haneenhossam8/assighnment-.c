@@ -1,0 +1,23 @@
+#include <stdio.h>
+typedef unsigned char u8;
+typedef unsigned short int u16;
+typedef unsigned int u32;
+const u8 max_speed = 255;;
+void printsensor(const u16 *ptr){
+ printf("sensor value = %u\n",*ptr);  
+} //ptr is constant
+int main()
+{
+   printf("system booting...\n");
+   printf("max speed:%u\n",max_speed); //because we make const speed=255
+   u16 tempreture = 75;
+   printsensor(&tempreture);
+   u8 PORTA_DATA=0;
+   u8 *const hardware_ptr=&PORTA_DATA;
+   *hardware_ptr=0xFF;
+   printf("PORTA_DATA=%u\n",PORTA_DATA);
+   const u32 device_id=987654321;
+   const u32 *const id_ptr=&device_id; 
+printf("device id= %u\n" ,*id_ptr);
+    return 0;
+}
