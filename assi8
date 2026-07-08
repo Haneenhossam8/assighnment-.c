@@ -1,0 +1,20 @@
+#include <stdio.h>
+#include <string.h>
+int main()
+{
+char user[20];
+char pass[20];
+printf("Enter User ID: ");
+scanf("%s",user);
+printf("Enter Password: ");
+scanf("%s",pass);
+if(strcmp(user,"Ahmed")==0 && strcmp(pass,"12347788")==0)
+printf("Login Successful");
+else if(strcmp(user,"Amr")==0 && strcmp(pass,"56785566")==0)
+printf("Login Successful");
+else if(strcmp(user,"Wael")==0 && strcmp(pass,"98701122")==0)
+printf("Login Successful");
+else
+printf("Invalid User ID or Password");
+return 0;
+}
