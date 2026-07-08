@@ -1,0 +1,13 @@
+#include <stdio.h>
+int main()
+{
+char name[]="Haneen";
+int age=21;
+float gpa=3.52;
+printf("Student Profile\n");
+printf("Name: %s\n",name);
+printf("Age: %d\n",age);
+printf("GPA: %.2f\n",gpa);
+return 0;
+}
+ 
