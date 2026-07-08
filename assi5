@@ -1,0 +1,116 @@
+#include <stdio.h>
+int add(int a, int b){
+    return a + b;
+}
+int subtract(int a, int b){
+    return a - b;
+}
+int multiply(int a, int b){
+    return a * b;
+}
+float divide(int a, int b){
+    return (float)a / b;
+}
+int And(int a, int b){
+    return a & b;
+}
+int Or(int a, int b){
+    return a | b;
+}
+int Not(int a){
+    return ~a;
+}
+int Xor(int a, int b){
+    return a ^ b;
+}
+int reminder(int a, int b){
+    return a % b;
+}
+int increment(int a){
+    return ++a;
+}
+int decrement(int a){
+    return --a;
+}
+int main(){
+    int id;
+    int x, y;
+    printf("Calculator Menu\n");
+    printf("1. Add\n");
+    printf("2. Subtract\n");
+    printf("3. Multiply\n");
+    printf("4. Divide\n");
+    printf("5. And\n");
+    printf("6. Or\n");
+    printf("7. Not\n");
+    printf("8. Xor\n");
+    printf("9. Reminder\n");
+    printf("10. Increment\n");
+    printf("11. Decrement\n");
+    printf("Enter Operation ID: ");
+    scanf("%d", &id);
+    switch(id){
+        case 1:
+            printf("Enter two numbers: ");
+            scanf("%d%d", &x, &y);
+            printf("Result = %d", add(x, y));
+            break;
+        case 2:
+            printf("Enter two numbers: ");
+            scanf("%d%d", &x, &y);
+            printf("Result = %d", subtract(x, y));
+            break;
+        case 3:
+            printf("Enter two numbers: ");
+            scanf("%d%d", &x, &y);
+            printf("Result = %d", multiply(x, y));
+            break;
+        case 4:
+            printf("Enter two numbers: ");
+            scanf("%d%d", &x, &y);
+            if(y == 0){
+                printf("Cannot divide ");
+            }else{
+                printf("Result = %.2f", divide(x, y));
+            }
+            break;
+        case 5:
+            printf("Enter two numbers: ");
+            scanf("%d%d", &x, &y);
+            printf("Result = %d", And(x, y));
+            break;
+        case 6:
+            printf("Enter two numbers: ");
+            scanf("%d%d", &x, &y);
+            printf("Result = %d", Or(x, y));
+            break;
+        case 7:
+            printf("Enter one number: ");
+            scanf("%d", &x);
+            printf("Result = %d", Not(x));
+            break;
+        case 8:
+            printf("Enter two numbers: ");
+            scanf("%d%d", &x, &y);
+            printf("Result = %d", Xor(x, y));
+            break;
+        case 9:
+            printf("Enter two numbers: ");
+            scanf("%d%d", &x, &y);
+            printf("Result = %d", reminder(x, y));
+            break;
+        case 10:
+            printf("Enter one number: ");
+            scanf("%d", &x);
+            printf("Result = %d", increment(x));
+            break;
+        case 11:
+            printf("Enter one number: ");
+            scanf("%d", &x);
+            printf("Result = %d", decrement(x));
+            break;
+        default:
+            printf("Invalid Operation ID");
+    }
+    return 0;
+}
