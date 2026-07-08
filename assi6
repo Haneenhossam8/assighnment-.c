@@ -1,0 +1,43 @@
+#include <stdio.h>
+int max(int a, int b, int c, int d);
+int min(int a, int b, int c, int d);
+
+int main()
+{
+    int a, b, c, d;
+    printf("Enter value 1: ");
+    scanf("%d", &a);
+    printf("Enter value 2: ");
+    scanf("%d", &b);
+    printf("Enter value 3: ");
+    scanf("%d", &c);
+    printf("Enter value 4: ");
+    scanf("%d", &d);
+    printf("The max value is: %d\n", max(a, b, c, d));
+    printf("The min value is: %d\n", min(a, b, c, d));
+    return 0;
+}
+int max(int a, int b, int c, int d)
+{
+    if (a >= b && a >= c && a >= d)
+        return a;
+    else if (b >= a && b >= c && b >= d)
+        return b;
+    else if (c >= a && c >= b && c >= d)
+        return c;
+    else
+        return d;
+}
+int min(int a, int b, int c, int d)
+{
+    if (a <= b && a <= c && a <= d)
+        return a;
+    else if (b <= a && b <= c && b <= d)
+        return b;
+    else if (c <= a && c <= b && c <= d)
+        return c;
+    else
+        return d;
+}
+
+    
