@@ -1,0 +1,191 @@
+#include "DIO.h"
+
+void DIO_SetPinDirection(u8 u8PortIdCopy, u8 u8PinIdCopy, u8 u8PinDirCopy)
+{
+	if(u8PinDirCopy == 1)
+	{
+		switch(u8PortIdCopy)
+		{
+			case 1:
+			SET_BIT(DDRA_Register, u8PinIdCopy);
+			break;
+			case 2:
+			SET_BIT(DDRB_Register, u8PinIdCopy);
+			break;
+			case 3:
+			SET_BIT(DDRC_Register, u8PinIdCopy);
+			break;
+			case 4:
+			SET_BIT(DDRD_Register, u8PinIdCopy);
+			break;
+		}
+	}
+	else
+	{
+		switch(u8PortIdCopy)
+		{
+			case 1:
+			CLR_BIT(DDRA_Register, u8PinIdCopy);
+			break;
+			case 2:
+			CLR_BIT(DDRB_Register, u8PinIdCopy);
+			break;
+			case 3:
+			CLR_BIT(DDRC_Register, u8PinIdCopy);
+			break;
+			case 4:
+			CLR_BIT(DDRD_Register, u8PinIdCopy);
+			break;
+		}
+	}
+}
+
+void DIO_SetPinValue(u8 u8PortIdCopy, u8 u8PinIdCopy, u8 u8PinValCopy)
+{
+	if(u8PinValCopy == 1)
+	{
+		switch(u8PortIdCopy)
+		{
+			case 1:
+			SET_BIT(PORTA_Register, u8PinIdCopy);
+			break;
+			case 2:
+			SET_BIT(PORTB_Register, u8PinIdCopy);
+			break;
+			case 3:
+			SET_BIT(PORTC_Register, u8PinIdCopy);
+			break;
+			case 4:
+			SET_BIT(PORTD_Register, u8PinIdCopy);
+			break;
+		}
+	}
+	else
+	{
+		switch(u8PortIdCopy)
+		{
+			case 1:
+			CLR_BIT(PORTA_Register, u8PinIdCopy);
+			break;
+			case 2:
+			CLR_BIT(PORTB_Register, u8PinIdCopy);
+			break;
+			case 3:
+			CLR_BIT(PORTC_Register, u8PinIdCopy);
+			break;
+			case 4:
+			CLR_BIT(PORTD_Register, u8PinIdCopy);
+			break;
+		}
+	}
+}
+
+u8 DIO_GetPinValue(u8 u8PortIdCopy, u8 u8PinIdCopy)
+{
+	switch(u8PortIdCopy)
+	{
+		case 1:
+		return GET_BIT(PINA_Register, u8PinIdCopy);
+		case 2:
+		return GET_BIT(PINB_Register, u8PinIdCopy);
+		case 3:
+		return GET_BIT(PINC_Register, u8PinIdCopy);
+		case 4:
+		return GET_BIT(PIND_Register, u8PinIdCopy);
+	}
+
+	return 0;
+}
+
+void DIO_TogglePinValue(u8 u8PortIdCopy, u8 u8PinIdCopy)
+{
+	switch(u8PortIdCopy)
+	{
+		case 1:
+		TOG_BIT(PORTA_Register, u8PinIdCopy);
+		break;
+		case 2:
+		TOG_BIT(PORTB_Register, u8PinIdCopy);
+		break;
+		case 3:
+		TOG_BIT(PORTC_Register, u8PinIdCopy);
+		break;
+		case 4:
+		TOG_BIT(PORTD_Register, u8PinIdCopy);
+		break;
+	}
+}
+
+void DIO_SetPortDirection(u8 u8PortIdCopy, u8 u8PortDirCopy)
+{
+	switch(u8PortIdCopy)
+	{
+		case 1:
+		DDRA_Register = u8PortDirCopy;
+		break;
+		case 2:
+		DDRB_Register = u8PortDirCopy;
+		break;
+		case 3:
+		DDRC_Register = u8PortDirCopy;
+		break;
+		case 4:
+		DDRD_Register = u8PortDirCopy;
+		break;
+	}
+}
+
+void DIO_SetPortValue(u8 u8PortIdCopy, u8 u8PortValCopy)
+{
+	switch(u8PortIdCopy)
+	{
+		case 1:
+		PORTA_Register = u8PortValCopy;
+		break;
+		case 2:
+		PORTB_Register = u8PortValCopy;
+		break;
+		case 3:
+		PORTC_Register = u8PortValCopy;
+		break;
+		case 4:
+		PORTD_Register = u8PortValCopy;
+		break;
+	}
+}
+
+void DIO_TogglePortValue(u8 u8PortIdCopy)
+{
+	switch(u8PortIdCopy)
+	{
+		case 1:
+		PORTA_Register = ~PORTA_Register;
+		break;
+		case 2:
+		PORTB_Register = ~PORTB_Register;
+		break;
+		case 3:
+		PORTC_Register = ~PORTC_Register;
+		break;
+		case 4:
+		PORTD_Register = ~PORTD_Register;
+		break;
+	}
+}
+
+u8 DIO_GetPortValue(u8 u8PortIdCopy)
+{
+	switch(u8PortIdCopy)
+	{
+		case 1:
+		return PINA_Register;
+		case 2:
+		return PINB_Register;
+		case 3:
+		return PINC_Register;
+		case 4:
+		return PIND_Register;
+	}
+
+	return 0;
+}
