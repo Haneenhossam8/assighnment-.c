@@ -1,0 +1,222 @@
+#define F_CPU 8000000UL
+
+#include <util/delay.h>
+#include "DIO.h"
+
+void lcd_send_command(u8 command)
+{
+	DIO_SetPinValue(PORTA, PIN0, LOW);
+	DIO_SetPinValue(PORTA, PIN1, LOW);
+
+	DIO_SetPortValue(PORTD, command);
+
+	DIO_SetPinValue(PORTA, PIN2, HIGH);
+	_delay_us(1);
+	DIO_SetPinValue(PORTA, PIN2, LOW);
+
+	_delay_ms(2);
+}
+
+void lcd_send_char(u8 character)
+{
+	DIO_SetPinValue(PORTA, PIN0, HIGH);
+	DIO_SetPinValue(PORTA, PIN1, LOW);
+
+	DIO_SetPortValue(PORTD, character);
+
+	DIO_SetPinValue(PORTA, PIN2, HIGH);
+	_delay_us(1);
+	DIO_SetPinValue(PORTA, PIN2, LOW);
+
+	_delay_ms(2);
+}
+
+void LCD_SendString(const char *str)
+{
+	while (*str != '\0')
+	{
+		lcd_send_char(*str);
+		str++;
+	}
+}
+
+void LCD_Init(void)
+{
+	DIO_SetPinDirection(PORTA, PIN0, OUTPUT);
+	DIO_SetPinDirection(PORTA, PIN1, OUTPUT);
+	DIO_SetPinDirection(PORTA, PIN2, OUTPUT);
+
+	DIO_SetPortDirection(PORTD, 0xFF);
+
+	_delay_ms(20);
+
+	lcd_send_command(0x38);
+	lcd_send_command(0x0C);
+	lcd_send_command(0x01);
+	lcd_send_command(0x06);
+	lcd_send_command(0x80);
+}
+
+void Keypad_Init(void)
+{
+	DIO_SetPinDirection(PORTC, PIN0, OUTPUT);
+	DIO_SetPinDirection(PORTC, PIN1, OUTPUT);
+	DIO_SetPinDirection(PORTC, PIN2, OUTPUT);
+	DIO_SetPinDirection(PORTC, PIN3, OUTPUT);
+
+	DIO_SetPinDirection(PORTC, PIN4, INPUT);
+	DIO_SetPinDirection(PORTC, PIN5, INPUT);
+	DIO_SetPinDirection(PORTC, PIN6, INPUT);
+	DIO_SetPinDirection(PORTC, PIN7, INPUT);
+
+	DIO_SetPinValue(PORTC, PIN0, HIGH);
+	DIO_SetPinValue(PORTC, PIN1, HIGH);
+	DIO_SetPinValue(PORTC, PIN2, HIGH);
+	DIO_SetPinValue(PORTC, PIN3, HIGH);
+
+	DIO_SetPinValue(PORTC, PIN4, HIGH);
+	DIO_SetPinValue(PORTC, PIN5, HIGH);
+	DIO_SetPinValue(PORTC, PIN6, HIGH);
+	DIO_SetPinValue(PORTC, PIN7, HIGH);
+}
+
+char Keypad_Read(void)
+{
+	u8 row;
+	u8 col;
+
+	char keys[4][4] =
+	{
+		{'7', '8', '9', '/'},
+		{'4', '5', '6', 'x'},
+		{'1', '2', '3', '-'},
+		{'C', '0', '=', '+'}
+	};
+
+	for (row = 0; row < 4; row++)
+	{
+		DIO_SetPinValue(PORTC, PIN0, HIGH);
+		DIO_SetPinValue(PORTC, PIN1, HIGH);
+		DIO_SetPinValue(PORTC, PIN2, HIGH);
+		DIO_SetPinValue(PORTC, PIN3, HIGH);
+
+		DIO_SetPinValue(PORTC, row, LOW);
+
+		for (col = 0; col < 4; col++)
+		{
+			if (DIO_GetPinValue(PORTC, col + 4) == LOW)
+			{
+				_delay_ms(20);
+
+				while (DIO_GetPinValue(PORTC, col + 4) == LOW);
+
+				return keys[row][col];
+			}
+		}
+	}
+
+	return 0;
+}
+
+int main(void)
+{
+	char key;
+
+	u8 num1 = 0;
+	u8 num2 = 0;
+	u8 result = 0;
+	char operation = 0;
+	LCD_Init();
+	Keypad_Init();
+	while (1)
+	{
+		key = Keypad_Read();
+
+		if (key != 0)
+		{
+			if (key >= '0' && key <= '9')
+			{
+				if (operation == 0)
+				{
+					num1 = key - '0';
+				}
+				else
+				{
+					num2 = key - '0';
+				}
+
+				lcd_send_char(key);
+			}
+
+			else if (key == '+' || key == '-' || key == 'x' || key == '/')
+			{
+				operation = key;
+
+				lcd_send_char(key);
+			}
+
+			else if (key == '=')
+			{
+				if (operation == '+')
+				{
+					result = num1 + num2;
+				}
+
+				else if (operation == '-')
+				{
+					result = num1 - num2;
+				}
+
+				else if (operation == 'x')
+				{
+					result = num1 * num2;
+				}
+
+				else if (operation == '/')
+				{
+					if (num2 != 0)
+					{
+						result = num1 / num2;
+					}
+					else
+					{
+						LCD_SendString("Error");
+
+						num1 = 0;
+						num2 = 0;
+						result = 0;
+						operation = 0;
+
+						continue;
+					}
+				}
+
+				lcd_send_char('=');
+
+				if (result >= 10)
+				{
+					lcd_send_char((result / 10) + '0');
+					lcd_send_char((result % 10) + '0');
+				}
+				else
+				{
+					lcd_send_char(result + '0');
+				}
+				num1 = 0;
+				num2 = 0;
+				result = 0;
+				operation = 0;
+			}
+
+			else if (key == 'C')
+			{
+				num1 = 0;
+				num2 = 0;
+				result = 0;
+				operation = 0;
+				lcd_send_command(0x01);
+				lcd_send_command(0x80);
+			}
+		}
+	}
+}
